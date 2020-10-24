@@ -17,6 +17,7 @@ class Especialidades extends Model
 
     public function especialidades(EspecialidadRequest $request)
     {
+
         $especialidad = Programacion::distinct('pr_servicio')->wherePr_fechaAndPr_estado($request->fecha, 'A')
             ->with(['especialidadesprogramados' => function ($query) {
                 $query->select('es_codigo', 'es_descripcion');

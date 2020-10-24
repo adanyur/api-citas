@@ -24,17 +24,17 @@ class MedicoRequest extends FormRequest
     public function rules()
     {
         return [
-            'fecha'=>'required',
-            'especialidad'=>'required'
+            'fecha' => 'required',
+            'especialidad' => 'required',
+            'historia' => 'required'
         ];
     }
     public function messages()
     {
         return [
-          'fecha.required'=>'No ingreso la fecha',
-          'especialidad'=>'No ingreso la especialidad'
+            'fecha.required' => 'No ingreso la fecha',
+            'especialidad.required' => 'No ingreso la especialidad',
+            'historia.required' => 'No se ingreso la historia'
         ];
     }
-
-
 }

@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use App\Http\Requests\EspecialidadRequest;
+use App\traits\cacheTrait;
 use App\Cita;
 use App\Especialidades;
-use App\Http\Requests\EspecialidadRequest;
 use App\Programacion;
-use App\traits\cacheTrait;
 
 
 class EspecialidadController extends Controller
@@ -31,7 +31,7 @@ class EspecialidadController extends Controller
 
     public function index(EspecialidadRequest $request)
     {
-        if (!$this->programacion->validadProgramming($request)) {
+        if (!$this->programacion->validacionProgramacion($request)) {
             return response()->json(['status' => false, 'message' => 'La fecha seleccionada no tiene programacion']);
         }
 
@@ -40,16 +40,6 @@ class EspecialidadController extends Controller
         }
 
         return response()->json($this->especialidades->especialidades($request), 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -73,16 +63,6 @@ class EspecialidadController extends Controller
     {
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Especialidades  $especialidades
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Especialidades $especialidades)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.

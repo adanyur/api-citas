@@ -24,11 +24,8 @@ use Illuminate\Support\Facades\Route;
     echo "<pre>{$query->sql}-{$query->time}</pre>";
 });*/
 
-
-
-
 Route::group(['middleware' => ['cors']], function () {
-    Route::post('ingreso', 'LoginDNIController@buscaDNI');
+    Route::post('login', 'LoginDNIController@buscaDocumento');
 });
 
 Route::middleware('auth:api')->group(function () {

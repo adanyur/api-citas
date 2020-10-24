@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Tarifa;
-use App\traits\cacheTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use App\traits\cacheTrait;
+use App\Tarifa;
 
 class TarifaController extends Controller
 {
@@ -17,24 +17,15 @@ class TarifaController extends Controller
      * @return \Illuminate\Http\Response
      */
     private $tarifa;
-    public function __construct(Tarifa $tarifa){
-        $this->tarifa=$tarifa;
+    public function __construct(Tarifa $tarifa)
+    {
+        $this->tarifa = $tarifa;
     }
 
     public function index()
     {
-        return response()->json($this->tarifa->TarifasVigentes(),200);
+        return response()->json($this->tarifa->TarifasVigentes(), 200);
         //return $this->cacheDataIafas($tarifa->TarifasVigentes());
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -59,16 +50,6 @@ class TarifaController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Tarifa  $tarifa
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Tarifa $tarifa)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.

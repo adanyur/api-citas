@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Email;
-use App\Mail\EmailCita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Email;
+use App\Mail\EmailCita;
 
 class EmailController extends Controller
 {
@@ -14,6 +14,13 @@ class EmailController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    private $email;
+    public function __construct(Email $email)
+    {
+        $this->email = $email;
+    }
+
+
     public function index()
     {
     }
@@ -27,9 +34,7 @@ class EmailController extends Controller
     public function store(Request $request)
     {
         //
-        $email = new Email();
-        $data = $email->email($request->id);
-        Mail::to($request->correo)->send(new EmailCita($data));
+        Mail::to($request->correo)->send(new EmailCita($this->email->email($request->id)));
         return response()->json(['message' => 'Correo enviado'], 200);
     }
 

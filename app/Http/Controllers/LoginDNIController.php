@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\AuthRequest;
 use App\User;
 use App\Paciente;
-use App\Http\Requests\AuthRequest;
 
 
 
@@ -23,14 +23,12 @@ class LoginDNIController extends Controller
   {
     if (!Auth::attempt(['name' => $request->name, 'password' => $request->password])) {
       return response()->json([
-        'status' => false, 'users' => 'Usuario no tiene permisos'
+        'status' => false, 'users' => 'Usuario no tiene permiso'
       ]);
     }
 
     $user = Auth::user();
-    $success['users'] = $this->paciente->datospaciente($request);
-    $success['status'] = true;
-    $success['token'] =  $user->createToken('AccesCita')->accessToken;
+    $success = $this->tokenCreate($user, $request);
     return response()->json($success, 200);
   }
 
@@ -39,22 +37,25 @@ class LoginDNIController extends Controller
     $postArray = $request->all();
     $postArray['password'] = bcrypt($postArray['password']);
     $user = User::create($postArray);
-
-    $success['users'] = $this->paciente->datospaciente($request);
-    $success['status'] = true;
-    $success['token'] = $user->createToken('AccesCita')->accessToken;
-
+    $success = $this->tokenCreate($user, $request);
     return response()->json($success, 200);
   }
 
+  public function tokenCreate($user, AuthRequest $request)
+  {
+    $success['users'] = $this->paciente->datospaciente($request);
+    $success['status'] = true;
+    $success['token'] =  $user->createToken('AccesCita')->accessToken;
+    return $success;
+  }
 
 
-  public function buscaDNI(AuthRequest $request)
+  public function buscaDocumento(AuthRequest $request)
   {
     if (!$this->user->validacionDni($request)) {
       return response()->json([
         'status' => false,
-        'users' => 'El dni no cuenta con Historia, solicitar una historia presencialmente.'
+        'messages' => 'El dni no cuenta con Historia'
       ]);
     }
 

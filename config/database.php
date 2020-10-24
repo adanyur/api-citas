@@ -95,7 +95,7 @@ return [
         'SERVER2' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
-            'host' => '192.168.0.14',
+            'host' => 'PgSQL2.clinicasantaisabel.com',
             'port' => '5432',
             'database' => 'bd_csi',
             'username' => 'isisuser',

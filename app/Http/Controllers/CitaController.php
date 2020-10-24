@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Cita;
-use App\Http\Requests\CitaRequest;
 use Illuminate\Http\Request;
+use App\Http\Requests\CitaRequest;
+use App\Cita;
 
 class CitaController extends Controller
 {
@@ -32,7 +32,7 @@ class CitaController extends Controller
     public function store(CitaRequest $request)
     {
 
-        return response()->json($this->cita->generarcitas($request));
+        return response()->json($this->cita->generarcitas($request), 200);
     }
 
     /**
