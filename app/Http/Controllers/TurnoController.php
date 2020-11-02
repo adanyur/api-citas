@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use App\Http\Requests\TurnoRequest;
-use App\traits\cacheTrait;
 use App\Turnos;
+use App\Programacion;
+use App\Cita;
+use App\traits\cacheTrait;
+use App\Http\Requests\TurnoRequest;
+
 
 
 class TurnoController extends Controller
@@ -18,10 +21,12 @@ class TurnoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    private $turnos;
-    public function __construct(Turnos $turnos)
+    private $turnos, $programacion, $cita;
+    public function __construct(Turnos $turnos, Programacion $programacion, Cita $cita)
     {
         $this->turnos = $turnos;
+        $this->programacion = $programacion;
+        $this->cita = $cita;
     }
 
 
@@ -29,11 +34,31 @@ class TurnoController extends Controller
     public function index(TurnoRequest $request)
     {
 
-
+        if ($this->validadCupos($request)) {
+            return response()->json(['status' => false, 'message' => 'El medico seleccionado ya no cuenta con cupos para el dia de hoy']);
+        }
         return response()->json($this->turnos->turnosProgramados($request), 200);
         //return $this->cacheDataTurno($dataTurno,$request);
 
     }
+
+
+    public function validadCupos(TurnoRequest $request)
+    {
+        return $this->numeroCuposCitas($request) === $this->numeroCuposProgramacion($request) ? true : false;
+    }
+
+    public function numeroCuposCitas(TurnoRequest $request)
+    {
+        return $this->cita->validacionCupos($request);
+    }
+
+
+    public function numeroCuposProgramacion(TurnoRequest $request)
+    {
+        return $this->programacion->validacionCupos($request);
+    }
+
 
     /**
      * Store a newly created resource in storage.

@@ -31,7 +31,8 @@ class AuthRequest extends FormRequest
     }
 
 
-    public function messages(){
+    public function messages()
+    {
 
         return [
             'name.required' => 'required',
@@ -39,5 +40,4 @@ class AuthRequest extends FormRequest
             'password.required' => 'required',
         ];
     }
-
 }

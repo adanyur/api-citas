@@ -50,7 +50,6 @@ class EspecialidadController extends Controller
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
@@ -59,7 +58,7 @@ class EspecialidadController extends Controller
      * @param  \App\Especialidades  $especialidades
      * @return \Illuminate\Http\Response
      */
-    public function show(Especialidades $especialidades)
+    public function show(Especialidades $especialidade)
     {
     }
 

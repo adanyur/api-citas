@@ -15,7 +15,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-         'App\Model' => 'App\Policies\ModelPolicy',
+        'App\Model' => 'App\Policies\ModelPolicy',
     ];
 
     /**
@@ -28,11 +28,5 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Passport::routes();
-        Passport::personalAccessClientId(config('passport.personal_access_client.id'));
-        Passport::personalAccessClientSecret(config('passport.personal_access_client.secret'));
-        //Passport::tokensExpireIn(now()->addDays(10));
-        //Passport::refreshTokensExpireIn(now()->addDays(30));
-        //Passport::personalAccessTokensExpireIn(now()->addMinutes(100)); // Tiempo de expiración del Token
-        //
     }
 }

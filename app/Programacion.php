@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\Horas as HorasResource;
 use App\Http\Requests\HoraRequest;
+use App\Http\Requests\TurnoRequest;
 use App\Http\Requests\EspecialidadRequest;
 
 class Programacion extends Model
@@ -30,6 +31,12 @@ class Programacion extends Model
     }
 
 
+    public function citas()
+    {
+        return $this->hasMany(Cita::class, 'ci_programacion', 'pr_numero');
+    }
+
+
     //FUNCIONES
     public function horas(HoraRequest $request)
     {
@@ -41,8 +48,9 @@ class Programacion extends Model
         return Programacion::wherePr_fechaAndPr_estado($request->fecha, 'A')->count() > 0 ? true : false;
     }
 
-    public function validacionCupos(HoraRequest $request)
+    public function validacionCupos(TurnoRequest $request)
     {
-        return Programacion::wherePr_numero($request->programacion)->first('pr_cupos');
+        return Programacion::wherePr_fechaAndPr_medicoAndPr_servicio($request->fecha, $request->medico, $request->especialidad)
+            ->sum('pr_cupos');
     }
 }

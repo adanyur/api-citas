@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
-use App\Http\Requests\HoraRequest;
 use App\Programacion;
-use App\Cita;
 use App\traits\cacheTrait;
+use App\Http\Requests\HoraRequest;
 
 class HoraController extends Controller
 {
@@ -17,39 +16,21 @@ class HoraController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    private $programacion, $cita;
-    public function __construct(Programacion $programacion, Cita $cita)
+    private $programacion;
+    public function __construct(Programacion $programacion)
     {
         $this->programacion = $programacion;
-        $this->cita = $cita;
     }
 
 
 
     public function index(HoraRequest $request)
     {
-
-        return $this->validadCupos($request) ?
-            response()->json(['status' => false, 'message' => 'El turno seleccionado ya no tiene cupos']) :
-            response()->json($this->programacion->horas($request),200);
+        return response()->json($this->programacion->horas($request), 200);
         //return $this->cacheDataHora($dataHora,$request);
     }
 
-    public function validadCupos(HoraRequest $request)
-    {
-        return $this->numeroCuposCitas($request) === $this->numeroCuposProgramacion($request) ? true : false;
-    }
 
-    public function numeroCuposCitas(HoraRequest $request)
-    {
-        return $this->cita->validacionCupos($request);
-    }
-
-
-    public function numeroCuposProgramacion(HoraRequest $request)
-    {
-        return $this->programacion->validacionCupos($request)->pr_cupos;
-    }
 
 
     /**

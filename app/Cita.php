@@ -7,15 +7,18 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests\EspecialidadRequest;
 use App\Http\Requests\HoraRequest;
 use App\Http\Requests\CitaRequest;
+use App\Http\Requests\TurnoRequest;
+
 
 class Cita extends Model
 {
     //
     protected $table = 'citas';
 
-    public function validacionCupos(HoraRequest $request)
+    public function validacionCupos(TurnoRequest $request)
     {
-        return Cita::whereCi_programacionAndCi_estado($request->programacion, 'R')->count();
+        //return Cita::whereCi_programacionAndCi_estado($request->programacion, 'R')->count();
+        return Cita::whereCi_fechacitaAndCi_medicoAndCi_servicioAndCi_estado(date_format(date_create_from_format('j/m/Y', $request->fecha), 'Y-m-d'), $request->medico, $request->especialidad, 'R')->count();
     }
 
 
