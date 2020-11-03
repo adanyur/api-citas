@@ -46,6 +46,8 @@ class LoginDNIController extends Controller
     $success['users'] = $this->paciente->datospaciente($request);
     $success['status'] = true;
     $success['token'] =  $user->createToken('AccesCita')->accessToken;
+    $success['expires'] = $user->createToken('AccesCita')->token->expires_at->diffInSeconds(now());
+
     return $success;
   }
 

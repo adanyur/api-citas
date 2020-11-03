@@ -17,8 +17,8 @@ class Paciente extends Model
     public function datospaciente(AuthRequest $request)
     {
         $paciente = Paciente::whereNdidntdd($request->name)
-            ->with(['historia' => function ($query) {
-                $query->select('cpcnte', 'nhsld');
+            ->with(['historia' => function ($q) {
+                $q->select('cpcnte', 'nhsld');
             }])->get(['cprsna', 'ndidntdd', 'ayncnctndo']);
 
         return  PacienteResource::collection($paciente);

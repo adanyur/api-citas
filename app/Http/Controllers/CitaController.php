@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\CitaRequest;
 use App\Cita;
+use App\Email;
+use App\Mail\EmailCita;
 
 class CitaController extends Controller
 {
@@ -13,10 +16,11 @@ class CitaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    private $cita;
-    public function __construct(Cita $cita)
+    private $cita, $email;
+    public function __construct(Cita $cita, Email $email)
     {
         $this->cita = $cita;
+        $this->email =  $email;
     }
 
     public function index()
@@ -32,7 +36,13 @@ class CitaController extends Controller
     public function store(CitaRequest $request)
     {
 
-        return response()->json($this->cita->generarcitas($request), 200);
+        $result  = $this->cita->generarcitas($request);
+        if (!$result[0]->status) {
+            return response()->json($result);
+        }
+
+        Mail::to($request->email)->send(new EmailCita($this->email->email($result[0]->retorno)));
+        return response()->json($result);
     }
 
     /**
