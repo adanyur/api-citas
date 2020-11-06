@@ -14,9 +14,18 @@ class Paciente extends Model
     protected $primaryKey = 'cprsna';
 
 
+    public function validacionDocumento(AuthRequest $request)
+    {
+        return Paciente::whereNdidntddAndSrgstro($request->name, 'V')
+            ->with(['historia' => function ($q) {
+                $q->whereSrgstro('V');
+            }])->exists();
+    }
+
+
     public function datospaciente(AuthRequest $request)
     {
-        $paciente = Paciente::whereNdidntdd($request->name)
+        $paciente = Paciente::whereNdidntddAndSrgstro($request->name, 'V')
             ->with(['historia' => function ($q) {
                 $q->select('cpcnte', 'nhsld');
             }])->get(['cprsna', 'ndidntdd', 'ayncnctndo']);

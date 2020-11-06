@@ -36,6 +36,8 @@ Route::middleware('auth:api')->group(function () {
         'horas' => 'HoraController',
         'iafas' => 'TarifaController',
         'citas' => 'CitaController',
-        'logout' => 'LoginDNIController@logout',
     ]);
+    Route::post('logout', 'LoginDNIController@logout');
 });
+
+Route::apiResource('email', 'EmailController');

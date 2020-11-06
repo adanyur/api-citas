@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use App\Http\Resources\Email as EmailResource;
 
 class EmailCita extends Mailable
 {
@@ -37,8 +38,8 @@ class EmailCita extends Mailable
 
         return $this->markdown('emails.EmailCitas')
             ->from($address, $name)
-            ->replyTo($address, $name)
             ->subject($subject)
-            ->with('data', $this->data);
+            ->replyTo($address, $name)
+            ->with('data', EmailResource::collection($this->data));
     }
 }

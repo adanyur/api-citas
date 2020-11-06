@@ -15,11 +15,10 @@ class Paciente extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>$this->cprsna,
-            'documento'=>$this->ndidntdd,
-            'paciente'=>$this->ayncnctndo,
-            'historia'=>$this->historia->nhsld
+            'id' => $this->cprsna,
+            'documento' => $this->ndidntdd,
+            'paciente' => $this->ayncnctndo,
+            'historia' => $this->historia->nhsld
         ];
-
     }
 }

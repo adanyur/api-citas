@@ -6,24 +6,40 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\AuthRequest;
 use App\User;
 use App\Paciente;
+use App\historia;
 
 
 
 class LoginDNIController extends Controller
 {
 
-  private $user, $paciente;
-  public function __construct(User $user, Paciente $paciente)
+  private $user, $paciente, $historia;
+  public function __construct(User $user, Paciente $paciente, Historia $historia)
   {
     $this->user = $user;
     $this->paciente = $paciente;
+    $this->historia = $historia;
+  }
+
+
+  public function buscaDocumento(AuthRequest $request)
+  {
+
+    if (!$this->paciente->validacionDocumento($request)) {
+      return response()->json([
+        'status' => false,
+        'messages' => 'El documento ingresado no cuenta con Historia'
+      ]);
+    }
+
+    return  $this->user->validacionUser($request) ?  $this->login($request) : $this->register($request);
   }
 
   public function login(AuthRequest $request)
   {
     if (!Auth::attempt(['name' => $request->name, 'password' => $request->password])) {
       return response()->json([
-        'status' => false, 'users' => 'Usuario no tiene permiso'
+        'status' => false, 'users' => 'Paciente no tiene permiso'
       ]);
     }
 
@@ -43,30 +59,15 @@ class LoginDNIController extends Controller
 
   public function tokenCreate($user, AuthRequest $request)
   {
-    $success['users'] = $this->paciente->datospaciente($request);
     $success['status'] = true;
     $success['token'] =  $user->createToken('AccesCita')->accessToken;
-    $success['expires'] = $user->createToken('AccesCita')->token->expires_at->diffInSeconds(now());
+    $success['users'] =  $this->paciente->datospaciente($request);
 
     return $success;
   }
 
 
-  public function buscaDocumento(AuthRequest $request)
-  {
-    if (!$this->user->validacionDni($request)) {
-      return response()->json([
-        'status' => false,
-        'messages' => 'El dni no cuenta con Historia'
-      ]);
-    }
 
-    if ($this->user->validacionUser($request)) {
-      return $this->login($request);
-    } else {
-      return $this->register($request);
-    }
-  }
 
   public function logout()
   {

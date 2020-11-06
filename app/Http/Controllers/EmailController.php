@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\views;
 use App\Email;
 use App\Mail\EmailCita;
 
@@ -23,6 +24,8 @@ class EmailController extends Controller
 
     public function index()
     {
+        //return response()->json($this->email->email(583093));
+        return  new EmailCita($this->email->email(583093));
     }
 
     /**
