@@ -1,7 +1,9 @@
 @component('mail::message')
+# RESERVACION DE CITAS
+
 @foreach ($data as $cita)
 @foreach ($cita->pacientedato as $paciente)
-**{{ $paciente->hc_apepat}} {{ $paciente->hc_apemat}} {{ $paciente->hc_nombre}}**, usted reservo una cita para el dia
+**{{ trim($paciente->hc_apepat)}} {{ trim($paciente->hc_apemat)}} {{ trim($paciente->hc_nombre)}}**, usted reservo una cita para el dia
 @switch(date("l", strtotime($cita->ci_fechacita)))
 @case('Monday')
 **Lunes**
@@ -71,10 +73,10 @@ a las **{{ $cita->ci_horatencion}}** con el
 @else
 **Dra.**
 @endif
-**{{ $medico->me_nombres}}**
+**{{ trim($medico->me_nombres)}}**
 @endforeach
 de la especialidad @foreach ($cita->especialidad as $especialidad)
-{{ $especialidad->es_descripcion}}
+**{{ trim($especialidad->es_descripcion)}}**.
 @endforeach
 @endforeach
 @endforeach

@@ -22,7 +22,7 @@
 @slot('footer')
 
 @component('mail::footer')
-© {{ date('Y') }} {{ config('app.name') }}. @lang('All rights reserved.')
+© {{ date('Y') }} Central Telefónica: 417 - 4100
 @endcomponent
 
 @endslot
